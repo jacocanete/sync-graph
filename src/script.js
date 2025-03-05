@@ -29,7 +29,11 @@ function extractCommitDates({ html }) {
 function writeScriptFile(commitData, committerName, committerEmail) {
   let scriptContent = '';
 
-  commitData.forEach((commitCount, date) => {
+  // Convert Map keys (dates) into an array and sort them by date (oldest first)
+  const sortedDates = Array.from(commitData.keys()).sort((a, b) => new Date(a) - new Date(b));
+
+  sortedDates.forEach((date) => {
+    const commitCount = commitData.get(date);
     for (let i = 0; i < commitCount; i++) {
       const commitMessage = `Sync commit for ${date} [No. ${i + 1}]`;
       // Check if the commit already exists in the history
